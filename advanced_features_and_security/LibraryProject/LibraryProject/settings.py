@@ -126,3 +126,36 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# SECURITY WARNING: turn off debug in production
+DEBUG = False
+
+# Ensure allowed hosts are set in production
+ALLOWED_HOSTS = ['yourdomain.com', 'localhost', '127.0.0.1']
+
+# XSS and content-type protections
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'  # prevent clickjacking
+
+# CSRF and session cookie security
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+
+# Use HTTPS redirect (in production)
+SECURE_SSL_REDIRECT = True
+
+# Optional: HSTS
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Content Security Policy (CSP) via django-csp middleware
+INSTALLED_APPS += ['csp']  # install django-csp via pip
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://trustedscripts.example.com')
+CSP_STYLE_SRC = ("'self'", 'https://trustedstyles.example.com')

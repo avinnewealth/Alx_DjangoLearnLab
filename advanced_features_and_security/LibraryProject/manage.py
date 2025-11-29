@@ -3,6 +3,8 @@
 import os
 import sys
 
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 def main():
     """Run administrative tasks."""

@@ -1,8 +1,11 @@
 
 # Create your views here.
-from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
+from .forms import BookForm
+from django.contrib.auth.decorators import login_required, permission_required
+
+
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -35,3 +38,23 @@ def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
     return redirect("book_list")
+
+
+# Example: safely handling form data
+@login_required
+@permission_required('bookshelf.can_create', raise_exception=True)
+def create_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():  # automatically sanitizes input
+            form.save()
+    else:
+        form = BookForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
+# Example: safe query using ORM (avoids SQL injection)
+@login_required
+def search_books(request):
+    query = request.GET.get('q', '')
+    books = Book.objects.filter(title__icontains=query)  # safe ORM query
+    return render(request, 'bookshelf/book_list.html', {'books': books})
