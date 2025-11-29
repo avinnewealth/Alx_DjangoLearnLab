@@ -152,6 +152,11 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+# If using a reverse proxy (e.g., Nginx, Heroku) that handles SSL
+# This tells Django to trust the 'X-Forwarded-Proto' header for HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 # Content Security Policy (CSP) via django-csp middleware
 INSTALLED_APPS += ['csp']  # install django-csp via pip
 MIDDLEWARE += ['csp.middleware.CSPMiddleware']
