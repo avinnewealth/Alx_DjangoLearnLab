@@ -10,3 +10,8 @@ class BookForm(forms.ModelForm):
         title = self.cleaned_data.get('title')
         # Optional: sanitize/validate title further
         return title
+
+class ExampleForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
