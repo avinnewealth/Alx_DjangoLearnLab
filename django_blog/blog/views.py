@@ -138,9 +138,27 @@ def search_posts(request):
     context = {'results': results, 'query': query}
     return render(request, 'blog/search_results.html', context)    
 
-def posts_by_tag(request, tag_name):
-    posts = Post.objects.filter(tags__name__iexact=tag_name)
-    context = {'posts': posts, 'tag_name': tag_name}
-    return render(request, 'blog/posts_by_tag.html', context)
+# def posts_by_tag(request, tag_name):
+#     posts = Post.objects.filter(tags__name__iexact=tag_name)
+#     context = {'posts': posts, 'tag_name': tag_name}
+#     return render(request, 'blog/posts_by_tag.html', context)
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs['tag_slug']
+        return Post.objects.filter(tags__slug__iexact=tag_slug)
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        return Post.objects.filter(tags__slug__iexact=tag_slug)
 
 # Create your views here.
