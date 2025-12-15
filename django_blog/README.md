@@ -36,3 +36,11 @@ This project uses Django’s built-in authentication framework.
 - /posts/<id>/ – view post
 - /posts/<id>/edit/ – edit post
 - /posts/<id>/delete/ – delete post
+
+## Comment System
+
+- Users can view comments on blog posts
+- Authenticated users can add comments
+- Only comment authors can edit or delete their comments
+- Comments are linked to posts via foreign key
+- Permissions enforced using Django mixins
