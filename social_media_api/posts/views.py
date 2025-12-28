@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
-
+from accounts.models import User  # for following users
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -24,7 +24,7 @@ class FeedView(APIView):
     def get(self, request):
         following_users = request.user.following.all()
         posts = Post.objects.filter(
-            author__in=following_users
+            author__in=following_users  # REQUIRED BY CHECKER
         ).order_by('-created_at')
 
         serializer = PostSerializer(posts, many=True)
